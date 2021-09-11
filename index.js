@@ -21,7 +21,7 @@ app.use(
 );
 
 const db = mongoose.createConnection(
-  "mongodb+srv://ravi:ravi@dino.m8fqt.mongodb.net/Dino?retryWrites=true&w=majority"
+  "mongodb+srv://ravi:ravi@dino.m8fqt.mongodb.net/dino?retryWrites=true&w=majority"
 );
 
 const userSchema = new mongoose.Schema({
