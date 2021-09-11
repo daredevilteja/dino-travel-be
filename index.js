@@ -39,6 +39,14 @@ const SALT = 5;
 
 const isNullOrUndefined = (val) => val === null || val === undefined;
 
+const AuthMiddleWare = async (req, res, next) => {
+  if (isNullOrUndefined(req.session) || isNullOrUndefined(req.session.userId)) {
+    res.status(401).send({ err: `Not Logged In` });
+  } else {
+    next();
+  }
+};
+
 app.post("/signup", async (req, res) => {
   const { userName, password, email, dob, sex, country, phNum } = req.body;
   const existingUser = await userModel.findOne({ email });
