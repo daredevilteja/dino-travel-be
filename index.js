@@ -94,6 +94,16 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/logout", (req, res) => {
+  if (!isNullOrUndefined(req.session)) {
+    req.session.destroy(() => {
+      res.sendStatus(200);
+    });
+  } else {
+    res.sendStatus(200);
+  }
+});
+
 app.get("/userInfo", AuthMiddleWare, async (req, res) => {
   const user = await userModel.findById(req.session.userId);
   res.send({ email: user.email });
