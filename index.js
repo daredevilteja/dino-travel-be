@@ -40,30 +40,50 @@ const SALT = 5;
 const isNullOrUndefined = (val) => val === null || val === undefined;
 
 app.post("/signup", async (req, res) => {
-    const { userName, password, email, dob, sex, country, phNum } = req.body;
-    const existingUser = await userModel.findOne({ email });
+  const { userName, password, email, dob, sex, country, phNum } = req.body;
+  const existingUser = await userModel.findOne({ email });
 
-    if (isNullOrUndefined(existingUser)) {
-        const hashedPwd = bcrypt.hashSync(password, SALT);
-        const newUser = new userModel({
-            userName,
-            password: hashedPwd,
-            email,
-            dob,
-            sex,
-            country,
-            phNum,
-        });
-        await newUser.save();
+  if (isNullOrUndefined(existingUser)) {
+    const hashedPwd = bcrypt.hashSync(password, SALT);
+    const newUser = new userModel({
+      userName,
+      password: hashedPwd,
+      email,
+      dob,
+      sex,
+      country,
+      phNum,
+    });
+    await newUser.save();
 
-        req.session.userId = newUser._id;
+    req.session.userId = newUser._id;
 
-        res.status(201).send("Signed Up");
+    res.status(201).send("Signed Up");
+  } else {
+    res
+      .status(409)
+      .send({ err: `User with Email ID ${email} already exists.` });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const existingUser = await userModel.findOne({ email });
+
+  if (isNullOrUndefined(existingUser)) {
+    res.status(401).send({ err: `EmailID doesn't exist` });
+  } else {
+    const hashedPwd = existingUser.password;
+    if (bcrypt.compareSync(password, hashedPwd)) {
+      req.session.userId = existingUser._id;
+      req.session.email = existingUser.email;
+      req.session.name = existingUser.userName;
+      res.send(`Successfully loggedIn`);
     } else {
-        res
-            .status(409)
-            .send({ err: `User with Email ID ${email} already exists.` });
+      res.status(401).send({ err: `Password is incorrect` });
     }
+  }
 });
 
 app.get("/", (req, res) => {
