@@ -94,6 +94,11 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/userInfo", AuthMiddleWare, async (req, res) => {
+  const user = await userModel.findById(req.session.userId);
+  res.send({ email: user.email });
+});
+
 app.get("/", (req, res) => {
   res.send("Working");
 });
