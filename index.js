@@ -34,7 +34,17 @@ const userSchema = new mongoose.Schema({
   phNum: Number,
 });
 
+const travelSchema = new mongoose.Schema({
+  startPoint: String,
+  destination: String,
+  dino: String,
+  startTime: String,
+  endTime: String,
+  userId: mongoose.Schema.Types.ObjectId,
+});
+
 const userModel = db.model("user", userSchema);
+const travelModel = db.model("ride", travelSchema);
 const SALT = 5;
 
 const isNullOrUndefined = (val) => val === null || val === undefined;
@@ -115,6 +125,8 @@ app.get("/profile", AuthMiddleWare, async (req, res) => {
 
   res.send(currUser);
 });
+
+app.get("/myTravels", AuthMiddleWare, (req, res) => {});
 
 app.put("/profile", AuthMiddleWare, async (req, res) => {
   const userId = req.session.userId;
