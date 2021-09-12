@@ -1,1 +1,1 @@
-# dino-travel-be
+# dino-travel-Backend Database connectivity
