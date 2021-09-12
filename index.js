@@ -109,6 +109,30 @@ app.get("/userInfo", AuthMiddleWare, async (req, res) => {
   res.send({ email: user.email });
 });
 
+app.get("/profile", AuthMiddleWare, async (req, res) => {
+  const userId = req.session.userId;
+  const currUser = await userModel.findOne({ _id: userId });
+
+  res.send(currUser);
+});
+
+app.put("/profile", AuthMiddleWare, async (req, res) => {
+  const userId = req.session.userId;
+
+  const { userName, dob, sex, country, phNum } = req.body;
+
+  const currUser = await userModel.findOne({ _id: userId });
+
+  currUser.userName = userName;
+  currUser.dob = dob;
+  currUser.sex = sex;
+  currUser.country = country;
+  currUser.phNum = phNum;
+
+  await currUser.save();
+  res.sendStatus(201);
+});
+
 app.get("/", (req, res) => {
   res.send("Working");
 });
