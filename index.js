@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: "https://dino-travel-fe.herokuapp.com/",
   })
 );
 app.use(
