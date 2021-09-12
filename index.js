@@ -160,6 +160,10 @@ app.put("/profile", AuthMiddleWare, async (req, res) => {
   res.sendStatus(201);
 });
 
+app.get("/", (req,res) => {
+  res.send("working");
+})
+
 app.listen(9999, () => {
   console.log("server started");
 });
