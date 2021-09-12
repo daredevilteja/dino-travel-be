@@ -40,6 +40,7 @@ const travelSchema = new mongoose.Schema({
   dino: String,
   startTime: String,
   endTime: String,
+  key: Number,
   userId: mongoose.Schema.Types.ObjectId,
 });
 
@@ -126,7 +127,21 @@ app.get("/profile", AuthMiddleWare, async (req, res) => {
   res.send(currUser);
 });
 
-app.get("/myTravels", AuthMiddleWare, (req, res) => {});
+app.get("/myTravels", AuthMiddleWare, async (req, res) => {
+  const userId = req.session.userId;
+  const myRides = await travelModel.find({ userId });
+  res.send(myRides);
+});
+
+app.post("/myTravels", AuthMiddleWare, async (req, res) => {
+  const rides = req.body;
+
+  rides.userId = req.session.userId;
+
+  const newRide = new travelModel(rides);
+  await newRide.save();
+  res.status(201).send(newRide);
+});
 
 app.put("/profile", AuthMiddleWare, async (req, res) => {
   const userId = req.session.userId;
@@ -143,10 +158,6 @@ app.put("/profile", AuthMiddleWare, async (req, res) => {
 
   await currUser.save();
   res.sendStatus(201);
-});
-
-app.get("/", (req, res) => {
-  res.send("Working");
 });
 
 app.listen(9999, () => {
