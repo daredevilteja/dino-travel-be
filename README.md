@@ -1,4 +1,5 @@
-# dino-travel-Backend 
+# Dino-Travel-Backend 
+Dino Travels is a web application where users can create an account and book a dino for travelling from one place to another. Users can book a ride, cancel a ride or finish a ride. Users can also view their travel history and their profile. This is the backend of the Dino Travels web application. You can view the live website [here](https://dino-travel.herokuapp.com/).
 
 # Local Setup
 1. Install [Node.js](https://nodejs.org/en/) in your local machine.
